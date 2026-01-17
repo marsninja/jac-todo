@@ -1,6 +1,5 @@
 """Todo item component for displaying a single todo."""
 
-
 def:pub TodoItem(todo: dict, onToggle: any, onDelete: any) -> any {
     return <div
         key={todo.id}
@@ -18,12 +17,8 @@ def:pub TodoItem(todo: dict, onToggle: any, onDelete: any) -> any {
         <input
             type="checkbox"
             checked={todo.completed}
-            onChange={lambda -> None { onToggle(todo.id); }}
-            style={{
-                "width": "20px",
-                "height": "20px",
-                "cursor": "pointer"
-            }}
+            onChange={lambda -> None { onToggle(todo.id);}}
+            style={{"width": "20px", "height": "20px", "cursor": "pointer"}}
         />
         <span
             style={{
@@ -35,7 +30,7 @@ def:pub TodoItem(todo: dict, onToggle: any, onDelete: any) -> any {
             {todo.title}
         </span>
         <button
-            onClick={lambda -> None { onDelete(todo.id); }}
+            onClick={lambda -> None { onDelete(todo.id);}}
             style={{
                 "padding": "0.5rem",
                 "backgroundColor": "transparent",

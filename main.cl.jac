@@ -6,37 +6,31 @@ import from "@jac-client/utils" { jacSignup, jacLogin, jacLogout, jacIsLoggedIn 
 import from .components.TodoItem { TodoItem }
 import from .components.AuthForm { AuthForm }
 
-
-def:pub app() -> any {
-    has isLoggedIn: bool = False;
-    has checkingAuth: bool = True;
-    has isSignup: bool = False;
-    has username: str = "";
-    has password: str = "";
-    has error: str = "";
-    has loading: bool = False;
-    has todos: list = [];
-    has newTodoText: str = "";
-    has todosLoading: bool = True;
+def:pub app -> any {
+    has isLoggedIn: bool = False,
+        checkingAuth: bool = True,
+        isSignup: bool = False,
+        username: str = "",
+        password: str = "",
+        error: str = "",
+        loading: bool = False,
+        todos: list = [],
+        newTodoText: str = "",
+        todosLoading: bool = True;
 
     # Check login status on mount
-    useEffect(
-        lambda -> None { isLoggedIn = jacIsLoggedIn(); checkingAuth = False; },
-        []
-    );
+    useEffect(lambda -> None { isLoggedIn = jacIsLoggedIn();checkingAuth = False;}, []);
 
     # Load todos when logged in
     useEffect(
-        lambda -> None {
-            if isLoggedIn {
-                fetchTodos();
-            }
-        },
+        lambda -> None { if isLoggedIn {
+            fetchTodos();
+        }},
         [isLoggedIn]
     );
 
     # Fetch todos from server
-    async def fetchTodos() -> None {
+    async def fetchTodos -> None {
         todosLoading = True;
         result = root spawn ListTodos();
         todos = result.reports[0] if result.reports else [];
@@ -44,17 +38,21 @@ def:pub app() -> any {
     }
 
     # Add a new todo
-    async def addTodo() -> None {
+    async def addTodo -> None {
         if not newTodoText.trim() {
             return;
         }
         response = root spawn AddTodo(title=newTodoText);
         newTodo = response.reports[0];
-        todos = todos.concat([{
-            "id": newTodo.id,
-            "title": newTodo.title,
-            "completed": newTodo.completed
-        }]);
+        todos = todos.concat(
+            [
+                {
+                    "id": newTodo.id,
+                    "title": newTodo.title,
+                    "completed": newTodo.completed
+                }
+            ]
+        );
         newTodoText = "";
     }
 
@@ -62,23 +60,20 @@ def:pub app() -> any {
     async def toggleTodo(todoId: str) -> None {
         root spawn ToggleTodo(todo_id=todoId);
         todos = todos.map(
-            lambda t: any -> any {
-                if t.id == todoId {
-                    return {"id": t.id, "title": t.title, "completed": not t.completed};
-                }
-                return t;
-            }
+            lambda t: any  -> any { if t.id == todoId {
+                return {"id": t.id, "title": t.title, "completed": not t.completed};
+            }return t; }
         );
     }
 
     # Delete a todo
     async def deleteTodo(todoId: str) -> None {
         root spawn DeleteTodo(todo_id=todoId);
-        todos = todos.filter(lambda t: any -> bool { return t.id != todoId; });
+        todos = todos.filter(lambda t: any  -> bool { return t.id != todoId; });
     }
 
     # Handle login
-    async def handleLogin() -> None {
+    async def handleLogin -> None {
         error = "";
         if not username.trim() or not password {
             error = "Please fill in all fields";
@@ -97,7 +92,7 @@ def:pub app() -> any {
     }
 
     # Handle signup
-    async def handleSignup() -> None {
+    async def handleSignup -> None {
         error = "";
         if not username.trim() or not password {
             error = "Please fill in all fields";
@@ -120,7 +115,7 @@ def:pub app() -> any {
     }
 
     # Handle logout
-    def handleLogout() -> None {
+    def handleLogout -> None {
         jacLogout();
         isLoggedIn = False;
         todos = [];
@@ -180,7 +175,9 @@ def:pub app() -> any {
                     "marginBottom": "1.5rem"
                 }}
             >
-                <h1 style={{"margin": "0", "color": "#1a1a2e"}}>
+                <h1
+                    style={{"margin": "0", "color": "#1a1a2e"}}
+                >
                     My Todos
                 </h1>
                 <button
@@ -199,16 +196,12 @@ def:pub app() -> any {
                 </button>
             </div>
             <div
-                style={{
-                    "display": "flex",
-                    "gap": "0.5rem",
-                    "marginBottom": "1.5rem"
-                }}
+                style={{"display": "flex", "gap": "0.5rem", "marginBottom": "1.5rem"}}
             >
                 <input
                     type="text"
                     value={newTodoText}
-                    onChange={lambda e: any -> None { newTodoText = e.target.value; }}
+                    onChange={lambda e: any  -> None { newTodoText = e.target.value;}}
                     onKeyPress={handleTodoKeyPress}
                     placeholder="What needs to be done?"
                     style={{
@@ -221,7 +214,7 @@ def:pub app() -> any {
                     }}
                 />
                 <button
-                    onClick={lambda -> None { addTodo(); }}
+                    onClick={lambda -> None { addTodo();}}
                     style={{
                         "padding": "0.75rem 1.5rem",
                         "fontSize": "1rem",
@@ -235,28 +228,41 @@ def:pub app() -> any {
                     Add
                 </button>
             </div>
-            {(<div style={{"color": "#666", "textAlign": "center"}}>
-                Loading todos...
-            </div>) if todosLoading else None}
-            {(<div>
-                {(<p style={{
-                    "color": "#888",
-                    "textAlign": "center",
-                    "padding": "2rem"
-                }}>
-                    No todos yet. Add one above!
-                </p>) if todos.length == 0 else None}
-                {todos.map(
-                    lambda todo: any -> any {
-                        return <TodoItem
+            {(
+                <div
+                    style={{"color": "#666", "textAlign": "center"}}
+                >
+                    Loading todos...
+                </div>
+            )
+            if todosLoading
+            else None}
+            {(
+                <div>
+                    {(
+                        <p
+                            style={{
+                                "color": "#888",
+                                "textAlign": "center",
+                                "padding": "2rem"
+                            }}
+                        >
+                            No todos yet. Add one above!
+                        </p>
+                    )
+                    if todos.length == 0
+                    else None}{todos.map(
+                        lambda todo: any  -> any { return <TodoItem
                             key={todo.id}
                             todo={todo}
                             onToggle={toggleTodo}
                             onDelete={deleteTodo}
-                        />;
-                    }
-                )}
-            </div>) if not todosLoading else None}
+                        />; }
+                    )}
+                </div>
+            )
+            if not todosLoading
+            else None}
             <div
                 style={{
                     "marginTop": "2rem",
@@ -266,7 +272,7 @@ def:pub app() -> any {
                     "fontSize": "0.9rem"
                 }}
             >
-                {todos.filter(lambda t: any -> bool { return not t.completed; }).length} items left
+                {todos.filter(lambda t: any  -> bool { return not t.completed; }).length} items left
             </div>
         </div>;
     }
@@ -278,9 +284,9 @@ def:pub app() -> any {
         password={password}
         error={error}
         loading={loading}
-        onUsernameChange={lambda e: any -> None { username = e.target.value; }}
-        onPasswordChange={lambda e: any -> None { password = e.target.value; }}
+        onUsernameChange={lambda e: any  -> None { username = e.target.value;}}
+        onPasswordChange={lambda e: any  -> None { password = e.target.value;}}
         onSubmit={handleSubmit}
-        onToggleMode={lambda -> None { isSignup = not isSignup; error = ""; }}
+        onToggleMode={lambda -> None { isSignup = not isSignup;error = "";}}
     />;
 }

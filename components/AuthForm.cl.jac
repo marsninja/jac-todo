@@ -1,6 +1,5 @@
 """Authentication form component for login/signup."""
 
-
 def:pub AuthForm(
     isSignup: bool,
     username: str,
@@ -33,11 +32,7 @@ def:pub AuthForm(
             Jac Todo App
         </h1>
         <p
-            style={{
-                "marginBottom": "1.5rem",
-                "color": "#666",
-                "textAlign": "center"
-            }}
+            style={{"marginBottom": "1.5rem", "color": "#666", "textAlign": "center"}}
         >
             {("Create an account" if isSignup else "Sign in to your account")}
         </p>
@@ -54,8 +49,12 @@ def:pub AuthForm(
             >
                 {error}
             </div>
-        ) if error else None}
-        <form onSubmit={onSubmit}>
+        )
+        if error
+        else None}
+        <form
+            onSubmit={onSubmit}
+        >
             <input
                 type="text"
                 value={username}
@@ -103,11 +102,13 @@ def:pub AuthForm(
                     "marginBottom": "1rem"
                 }}
             >
-                {((
-                    "Processing..."
-                    if loading
-                    else ("Sign Up" if isSignup else "Log In")
-                ))}
+                {(
+                    (
+                        "Processing..."
+                        if loading
+                        else ("Sign Up" if isSignup else "Log In")
+                    )
+                )}
             </button>
         </form>
         <p
@@ -116,11 +117,7 @@ def:pub AuthForm(
             {("Already have an account? " if isSignup else "Don't have an account? ")}
             <span
                 onClick={onToggleMode}
-                style={{
-                    "color": "#4CAF50",
-                    "cursor": "pointer",
-                    "fontWeight": "bold"
-                }}
+                style={{"color": "#4CAF50", "cursor": "pointer", "fontWeight": "bold"}}
             >
                 {("Log In" if isSignup else "Sign Up")}
             </span>
