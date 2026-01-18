@@ -4,7 +4,7 @@ Combines server-side endpoints with client-side UI.
 """
 
 # Import server-side data models and walkers
-import from .endpoints { Todo, AddTodo, ListTodos, ToggleTodo, DeleteTodo }
+sv { import from endpoints { Todo, AddTodo, ListTodos, ToggleTodo, DeleteTodo } }
 
 # Client-side UI
 cl {
