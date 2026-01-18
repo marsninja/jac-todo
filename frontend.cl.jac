@@ -6,6 +6,13 @@ import from "@jac-client/utils" { jacSignup, jacLogin, jacLogout, jacIsLoggedIn 
 import from .components.TodoItem { TodoItem }
 import from .components.AuthForm { AuthForm }
 
+# TODO: Need `sv import` to import server-side walker signatures for client use
+# This would allow single source of truth without duplicating walker stubs:
+#
+#   sv import from .endpoints { AddTodo, ListTodos, ToggleTodo, DeleteTodo }
+#
+# For now, client spawns walkers dynamically without compile-time type checking
+
 def:pub app -> any {
     has isLoggedIn: bool = False,
         checkingAuth: bool = True,

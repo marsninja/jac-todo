@@ -4,8 +4,6 @@ version = "1.0.0"
 description = "Jac client application: jac-todo"
 entry-point = "main.jac"
 
-[dependencies]
-
 [dependencies.npm]
 jac-client-node = "1.0.3"
 
