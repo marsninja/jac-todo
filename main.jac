@@ -1,6 +1,7 @@
-"""{{name}} - Entry Point.
+"""TaskFlow - Entry Point.
 
 Combines server-side endpoints with client-side UI.
+A modern todo app with hierarchical sub-todos and priorities.
 """
 
 # Import server-side data models and walkers
