@@ -5,6 +5,7 @@ import from "@jac-client/utils" { jacSignup, jacLogin, jacLogout, jacIsLoggedIn 
 
 import from .components.TodoItem { TodoItem }
 import from .components.AuthForm { AuthForm }
+import ".styles.css";
 
 sv import from endpoints { AddTodo, ListTodos, ToggleTodo, DeleteTodo }
 
@@ -145,115 +146,38 @@ def:pub app -> any {
 
     # Loading screen
     if checkingAuth {
-        return
-            <div
-                style={{
-                    "display": "flex",
-                    "justifyContent": "center",
-                    "alignItems": "center",
-                    "height": "100vh",
-                    "fontFamily": "system-ui, -apple-system, sans-serif",
-                    "color": "#666"
-                }}
-            >
-                Loading...
-            </div>;
+        return <div className="loading-screen">Loading...</div>;
     }
 
     # Logged in - Show Todo List
     if isLoggedIn {
         return
-            <div
-                style={{
-                    "maxWidth": "600px",
-                    "margin": "2rem auto",
-                    "padding": "2rem",
-                    "fontFamily": "system-ui, -apple-system, sans-serif"
-                }}
-            >
-                <div
-                    style={{
-                        "display": "flex",
-                        "justifyContent": "space-between",
-                        "alignItems": "center",
-                        "marginBottom": "1.5rem"
-                    }}
-                >
-                    <h1 style={{"margin": "0", "color": "#1a1a2e"}}>
-                        My Todos
-                    </h1>
-                    <button
-                        onClick={handleLogout}
-                        style={{
-                            "padding": "0.5rem 1rem",
-                            "fontSize": "0.9rem",
-                            "backgroundColor": "#f8f9fa",
-                            "color": "#666",
-                            "border": "1px solid #ddd",
-                            "borderRadius": "6px",
-                            "cursor": "pointer"
-                        }}
-                    >
+            <div className="app-container">
+                <div className="header">
+                    <h1 className="header-title">My Todos</h1>
+                    <button className="btn-logout" onClick={handleLogout}>
                         Log Out
                     </button>
                 </div>
-                <div
-                    style={{
-                        "display": "flex",
-                        "gap": "0.5rem",
-                        "marginBottom": "1.5rem"
-                    }}
-                >
+                <div className="todo-input-section">
                     <input
                         type="text"
+                        className="todo-input"
                         value={newTodoText}
                         onChange={lambda e: any  -> None { newTodoText = e.target.value;}}
                         onKeyPress={handleTodoKeyPress}
                         placeholder="What needs to be done?"
-                        style={{
-                            "flex": "1",
-                            "padding": "0.75rem 1rem",
-                            "fontSize": "1rem",
-                            "border": "2px solid #e0e0e0",
-                            "borderRadius": "8px",
-                            "outline": "none"
-                        }}
                     />
-                    <button
-                        onClick={lambda -> None { addTodo();}}
-                        style={{
-                            "padding": "0.75rem 1.5rem",
-                            "fontSize": "1rem",
-                            "backgroundColor": "#4CAF50",
-                            "color": "white",
-                            "border": "none",
-                            "borderRadius": "8px",
-                            "cursor": "pointer"
-                        }}
-                    >
+                    <button className="btn-add" onClick={lambda -> None { addTodo();}}>
                         Add
                     </button>
                 </div>
-                {(
-                    <div style={{"color": "#666", "textAlign": "center"}}>
-                        Loading todos...
-                    </div>
-                )
+                {(<div className="loading-todos">Loading todos...</div>)
                 if todosLoading
                 else None}
                 {(
                     <div>
-                        {(
-                            <p
-                                style={{
-                                    "color": "#888",
-                                    "textAlign": "center",
-                                    "padding": "2rem"
-                                }}
-                            >
-                                No todos yet. Add one above!
-                            </p>
-                        )
+                        {(<p className="empty-todos">No todos yet. Add one above!</p>)
                         if todos.length == 0
                         else None}{todos.map(
                             lambda todo: any  -> any { return
@@ -268,15 +192,7 @@ def:pub app -> any {
                 )
                 if not todosLoading
                 else None}
-                <div
-                    style={{
-                        "marginTop": "2rem",
-                        "paddingTop": "1rem",
-                        "borderTop": "1px solid #eee",
-                        "color": "#888",
-                        "fontSize": "0.9rem"
-                    }}
-                >
+                <div className="footer">
                     {todos.filter(lambda t: any  -> bool { return not t.completed; }).length} items left
                 </div>
             </div>;

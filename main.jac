@@ -10,7 +10,7 @@ sv {
 
 # Client-side UI
 cl {
-    import from .frontend { app as ClientApp }
+    import from frontend { app as ClientApp }
 
     def:pub app -> any {
         return
