@@ -24,11 +24,12 @@ def:pub Button(
         }
     };
 
-    return <button
-        style={{** base_styles, ** variant_styles[variant]}}
-        onClick={onClick}
-        disabled={disabled}
-    >
-        {label}
-    </button>;
+    return
+        <button
+            style={{** base_styles, ** variant_styles[variant]}}
+            onClick={onClick}
+            disabled={disabled}
+        >
+            {label}
+        </button>;
 }

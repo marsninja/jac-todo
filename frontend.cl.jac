@@ -6,7 +6,6 @@ import from "@jac-client/utils" { jacSignup, jacLogin, jacLogout, jacIsLoggedIn 
 import from .components.TodoItem { TodoItem }
 import from .components.AuthForm { AuthForm }
 
-# Import server walkers for type checking (marked as server-side)
 sv import from endpoints { AddTodo, ListTodos, ToggleTodo, DeleteTodo }
 
 def:pub app -> any {
@@ -146,150 +145,154 @@ def:pub app -> any {
 
     # Loading screen
     if checkingAuth {
-        return <div
-            style={{
-                "display": "flex",
-                "justifyContent": "center",
-                "alignItems": "center",
-                "height": "100vh",
-                "fontFamily": "system-ui, -apple-system, sans-serif",
-                "color": "#666"
-            }}
-        >
-            Loading...
-        </div>;
+        return
+            <div
+                style={{
+                    "display": "flex",
+                    "justifyContent": "center",
+                    "alignItems": "center",
+                    "height": "100vh",
+                    "fontFamily": "system-ui, -apple-system, sans-serif",
+                    "color": "#666"
+                }}
+            >
+                Loading...
+            </div>;
     }
 
     # Logged in - Show Todo List
     if isLoggedIn {
-        return <div
-            style={{
-                "maxWidth": "600px",
-                "margin": "2rem auto",
-                "padding": "2rem",
-                "fontFamily": "system-ui, -apple-system, sans-serif"
-            }}
-        >
+        return
             <div
                 style={{
-                    "display": "flex",
-                    "justifyContent": "space-between",
-                    "alignItems": "center",
-                    "marginBottom": "1.5rem"
+                    "maxWidth": "600px",
+                    "margin": "2rem auto",
+                    "padding": "2rem",
+                    "fontFamily": "system-ui, -apple-system, sans-serif"
                 }}
             >
-                <h1
-                    style={{"margin": "0", "color": "#1a1a2e"}}
-                >
-                    My Todos
-                </h1>
-                <button
-                    onClick={handleLogout}
-                    style={{
-                        "padding": "0.5rem 1rem",
-                        "fontSize": "0.9rem",
-                        "backgroundColor": "#f8f9fa",
-                        "color": "#666",
-                        "border": "1px solid #ddd",
-                        "borderRadius": "6px",
-                        "cursor": "pointer"
-                    }}
-                >
-                    Log Out
-                </button>
-            </div>
-            <div
-                style={{"display": "flex", "gap": "0.5rem", "marginBottom": "1.5rem"}}
-            >
-                <input
-                    type="text"
-                    value={newTodoText}
-                    onChange={lambda e: any  -> None { newTodoText = e.target.value;}}
-                    onKeyPress={handleTodoKeyPress}
-                    placeholder="What needs to be done?"
-                    style={{
-                        "flex": "1",
-                        "padding": "0.75rem 1rem",
-                        "fontSize": "1rem",
-                        "border": "2px solid #e0e0e0",
-                        "borderRadius": "8px",
-                        "outline": "none"
-                    }}
-                />
-                <button
-                    onClick={lambda -> None { addTodo();}}
-                    style={{
-                        "padding": "0.75rem 1.5rem",
-                        "fontSize": "1rem",
-                        "backgroundColor": "#4CAF50",
-                        "color": "white",
-                        "border": "none",
-                        "borderRadius": "8px",
-                        "cursor": "pointer"
-                    }}
-                >
-                    Add
-                </button>
-            </div>
-            {(
                 <div
-                    style={{"color": "#666", "textAlign": "center"}}
+                    style={{
+                        "display": "flex",
+                        "justifyContent": "space-between",
+                        "alignItems": "center",
+                        "marginBottom": "1.5rem"
+                    }}
                 >
-                    Loading todos...
+                    <h1 style={{"margin": "0", "color": "#1a1a2e"}}>
+                        My Todos
+                    </h1>
+                    <button
+                        onClick={handleLogout}
+                        style={{
+                            "padding": "0.5rem 1rem",
+                            "fontSize": "0.9rem",
+                            "backgroundColor": "#f8f9fa",
+                            "color": "#666",
+                            "border": "1px solid #ddd",
+                            "borderRadius": "6px",
+                            "cursor": "pointer"
+                        }}
+                    >
+                        Log Out
+                    </button>
                 </div>
-            )
-            if todosLoading
-            else None}
-            {(
-                <div>
-                    {(
-                        <p
-                            style={{
-                                "color": "#888",
-                                "textAlign": "center",
-                                "padding": "2rem"
-                            }}
-                        >
-                            No todos yet. Add one above!
-                        </p>
-                    )
-                    if todos.length == 0
-                    else None}{todos.map(
-                        lambda todo: any  -> any { return <TodoItem
-                            key={todo.id}
-                            todo={todo}
-                            onToggle={toggleTodo}
-                            onDelete={deleteTodo}
-                        />; }
-                    )}
+                <div
+                    style={{
+                        "display": "flex",
+                        "gap": "0.5rem",
+                        "marginBottom": "1.5rem"
+                    }}
+                >
+                    <input
+                        type="text"
+                        value={newTodoText}
+                        onChange={lambda e: any  -> None { newTodoText = e.target.value;}}
+                        onKeyPress={handleTodoKeyPress}
+                        placeholder="What needs to be done?"
+                        style={{
+                            "flex": "1",
+                            "padding": "0.75rem 1rem",
+                            "fontSize": "1rem",
+                            "border": "2px solid #e0e0e0",
+                            "borderRadius": "8px",
+                            "outline": "none"
+                        }}
+                    />
+                    <button
+                        onClick={lambda -> None { addTodo();}}
+                        style={{
+                            "padding": "0.75rem 1.5rem",
+                            "fontSize": "1rem",
+                            "backgroundColor": "#4CAF50",
+                            "color": "white",
+                            "border": "none",
+                            "borderRadius": "8px",
+                            "cursor": "pointer"
+                        }}
+                    >
+                        Add
+                    </button>
                 </div>
-            )
-            if not todosLoading
-            else None}
-            <div
-                style={{
-                    "marginTop": "2rem",
-                    "paddingTop": "1rem",
-                    "borderTop": "1px solid #eee",
-                    "color": "#888",
-                    "fontSize": "0.9rem"
-                }}
-            >
-                {todos.filter(lambda t: any  -> bool { return not t.completed; }).length} items left
-            </div>
-        </div>;
+                {(
+                    <div style={{"color": "#666", "textAlign": "center"}}>
+                        Loading todos...
+                    </div>
+                )
+                if todosLoading
+                else None}
+                {(
+                    <div>
+                        {(
+                            <p
+                                style={{
+                                    "color": "#888",
+                                    "textAlign": "center",
+                                    "padding": "2rem"
+                                }}
+                            >
+                                No todos yet. Add one above!
+                            </p>
+                        )
+                        if todos.length == 0
+                        else None}{todos.map(
+                            lambda todo: any  -> any { return
+                                <TodoItem
+                                    key={todo.id}
+                                    todo={todo}
+                                    onToggle={toggleTodo}
+                                    onDelete={deleteTodo}
+                                />; }
+                        )}
+                    </div>
+                )
+                if not todosLoading
+                else None}
+                <div
+                    style={{
+                        "marginTop": "2rem",
+                        "paddingTop": "1rem",
+                        "borderTop": "1px solid #eee",
+                        "color": "#888",
+                        "fontSize": "0.9rem"
+                    }}
+                >
+                    {todos.filter(lambda t: any  -> bool { return not t.completed; }).length} items left
+                </div>
+            </div>;
     }
 
     # Not logged in - Show Auth Form
-    return <AuthForm
-        isSignup={isSignup}
-        username={username}
-        password={password}
-        error={error}
-        loading={loading}
-        onUsernameChange={lambda e: any  -> None { username = e.target.value;}}
-        onPasswordChange={lambda e: any  -> None { password = e.target.value;}}
-        onSubmit={handleSubmit}
-        onToggleMode={lambda -> None { isSignup = not isSignup;error = "";}}
-    />;
+    return
+        <AuthForm
+            isSignup={isSignup}
+            username={username}
+            password={password}
+            error={error}
+            loading={loading}
+            onUsernameChange={lambda e: any  -> None { username = e.target.value;}}
+            onPasswordChange={lambda e: any  -> None { password = e.target.value;}}
+            onSubmit={handleSubmit}
+            onToggleMode={lambda -> None { isSignup = not isSignup;error = "";}}
+        />;
 }

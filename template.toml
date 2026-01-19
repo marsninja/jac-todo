@@ -1,0 +1,68 @@
+# Fullstack Jac Template Manifest
+# This file defines how this directory is used as a project template
+
+[template]
+name = "fullstack"
+description = "Full-stack Jac app with authenticated todo list example"
+jaclang = "0.9.8"
+
+# Plugins required by this template
+[[template.plugins]]
+name = "jac-client"
+version = "0.2.8"
+
+[config]
+# This becomes the jac.toml for created projects
+[config.project]
+name = "{{name}}"
+version = "0.1.0"
+description = "A full-stack Jac application"
+entry-point = "main.jac"
+
+[config.dependencies]
+
+[config."dependencies.npm"]
+jac-client-node = "1.0.3"
+
+[config."dependencies.npm.dev"]
+"@jac-client/dev-deps" = "1.0.0"
+
+[config.dev-dependencies]
+watchdog = ">=3.0.0"
+
+[config.serve]
+base_route_app = "app"
+
+[config."plugins.client"]
+
+[options]
+# Directories to create (beyond those implied by files)
+directories = [".jac", "assets"]
+
+# Entries for .jac/.gitignore
+gitignore_entries = [
+    "# Ignore all build artifacts in .jac directory",
+    "*"
+]
+
+# Entries for project root .gitignore
+root_gitignore_entries = [
+    "# Jac build artifacts",
+    ".jac/",
+    "",
+    "# Dependencies",
+    "node_modules/",
+    "",
+    "# IDE",
+    ".vscode/",
+    ".idea/"
+]
+
+# Files to include (explicit list to avoid binary files)
+files = [
+    "main.jac",
+    "endpoints.sv.jac",
+    "frontend.cl.jac",
+    "components/*.jac",
+    "README.md"
+]
