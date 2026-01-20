@@ -67,5 +67,6 @@ files = [
     "endpoints.sv.jac",
     "frontend.cl.jac",
     "components/*.jac",
-    "README.md"
+    "README.md",
+    "styles.css"
 ]
