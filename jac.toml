@@ -1,8 +1,12 @@
+# Full-stack Jac application with authenticated todo list example
+
 [project]
-name = "jac-todo"
-version = "1.0.0"
-description = "Jac client application: jac-todo"
+name = "{{name}}"
+version = "0.1.0"
+description = "A full-stack Jac application"
 entry-point = "main.jac"
+
+[dependencies]
 
 [dependencies.npm]
 jac-client-node = "1.0.4"
@@ -30,3 +34,38 @@ plugins = []
 
 [plugins.client.configs.tailwind.theme.extend.fontFamily]
 sans = ["Inter", "system-ui", "-apple-system", "sans-serif"]
+
+# Template metadata - used when packing, stripped from created projects
+[template]
+name = "fullstack"
+description = "Full-stack Jac app with authenticated todo list example"
+jaclang = "0.9.8"
+
+[[template.plugins]]
+name = "jac-client"
+version = "0.2.8"
+
+[template.options]
+directories = [".jac", "assets"]
+gitignore_entries = [
+    "# Ignore all build artifacts in .jac directory",
+    "*"
+]
+root_gitignore_entries = [
+    "# Jac build artifacts",
+    ".jac/",
+    "",
+    "# Dependencies",
+    "node_modules/",
+    "",
+    "# IDE",
+    ".vscode/",
+    ".idea/"
+]
+files = [
+    "main.jac",
+    "endpoints.sv.jac",
+    "frontend.cl.jac",
+    "components/*.jac",
+    "README.md"
+]
