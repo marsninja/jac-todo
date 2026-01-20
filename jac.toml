@@ -36,16 +36,16 @@ plugins = []
 sans = ["Inter", "system-ui", "-apple-system", "sans-serif"]
 
 # Jacpac metadata - used when packing, stripped from created projects
-[jacpac]
+[jacpack]
 name = "fullstack"
 description = "Full-stack Jac app with authenticated todo list example"
 jaclang = "0.9.8"
 
-[[jacpac.plugins]]
+[[jacpack.plugins]]
 name = "jac-client"
 version = "0.2.8"
 
-[jacpac.options]
+[jacpack.options]
 directories = [".jac", "assets"]
 gitignore_entries = [
     "# Ignore all build artifacts in .jac directory",
