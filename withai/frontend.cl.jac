@@ -72,8 +72,8 @@ def:pub app -> any {
         mealLoading = True;
         try {
             response = root spawn MealToIngredients(meal_description=mealDescription);
-            if response.reports and response.reports.length > 0 {
-                result = response.reports[0];
+            if response.reports and response.reports.length > 1 {
+                result = response.reports[1];
                 added = result["ingredients_added"];
                 if added and added.length > 0 {
                     todos = todos.concat(added);

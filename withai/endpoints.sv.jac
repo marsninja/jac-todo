@@ -15,9 +15,8 @@ obj Ingredient {
     has carby: bool;
 }
 
-sem Ingredient.unit = "Unit of measurement";
-sem Ingredient.cost = "Estimated cost in USD";
-sem Ingredient.carby = "Will spike glucose";
+sem Ingredient. cost= "Estimated cost in JMD";
+sem Ingredient. carby= "Will spike glucose";
 
 """
 Generate a shopping list of ingredients needed for a described meal.
@@ -46,7 +45,7 @@ walker:priv AddTodo {
             priority=self.priority,
             parent_id=self.parent_id
         );
-        report new_todo[0];
+        report new_todo[0] ;
     }
 }
 
@@ -70,7 +69,7 @@ walker:priv ListTodos {
     }
 
     can report_all with `root exit {
-        report self.todos;
+        report self.todos ;
     }
 }
 
@@ -84,7 +83,7 @@ walker:priv ToggleTodo {
     can toggle with Todo entry {
         if here.id == self.todo_id {
             here.completed = not here.completed;
-            report {"id": here.id, "completed": here.completed};
+            report {"id": here.id, "completed": here.completed} ;
         }
     }
 }
@@ -98,8 +97,8 @@ walker:priv DeleteTodo {
 
     can delete with Todo entry {
         if here.id == self.todo_id or here.parent_id == self.todo_id {
-            del here;
-            report {"deleted": self.todo_id};
+            del here ;
+            report {"deleted": self.todo_id} ;
         }
     }
 }
@@ -122,11 +121,12 @@ walker:priv MealToIngredients {
             );
             total_cost += ingredient.cost;
         }
-        todos = root spawn ListTodos();
+        todos_result = root spawn ListTodos();
+        todos_list = todos_result.reports[0] if todos_result.reports else [];
         report {
             "meal": self.meal_description,
-            "ingredients_added": todos,
+            "ingredients_added": todos_list,
             "total_cost": total_cost
-        };
+        } ;
     }
 }
