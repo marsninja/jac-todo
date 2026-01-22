@@ -44,8 +44,8 @@ This template demonstrates the full-stack Jac architecture:
 
 ## Adding Dependencies
 
-Add npm packages with the --cl flag:
+Add npm packages with the --npm flag:
 
 ```bash
-jac add --cl react-router-dom
+jac add --npm react-router-dom
 ```
