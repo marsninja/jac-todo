@@ -5,12 +5,17 @@ import from uuid { uuid4 }
 
 glob llm = Model(model_name="claude-sonnet-4-20250514");
 
+enum Unit { PIECE, LB, OZ, CUP, TBSP, TSP, CLOVE, BUNCH }
+
 obj Ingredient {
     has name: str;
+    has quantity: float;
+    has unit: Unit;
     has cost: float;
     has carby: bool;
 }
 
+sem Ingredient.unit = "Unit of measurement";
 sem Ingredient.cost = "Estimated cost in USD";
 sem Ingredient.carby = "Will spike glucose";
 
@@ -107,7 +112,7 @@ walker:priv MealToIngredients {
         total_cost: float = 0.0;
         for ingredient in ingredients {
             new_id = str(uuid4());
-            title = f"{ingredient.name} (${ingredient.cost:.2f})";
+            title = f"{ingredient.quantity} {ingredient.unit.name} {ingredient.name} (${ingredient.cost:.2f})";
             here ++> Todo(
                 id=new_id,
                 title=title,
