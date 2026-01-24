@@ -8,7 +8,7 @@ import ".styles.css";
 import from .components.TodoItem { TodoItem }
 import from .components.AuthForm { AuthForm }
 
-sv import from endpoints { AddTodo, ListTodos, ToggleTodo, DeleteTodo }
+sv import from main { AddTodo, ListTodos, ToggleTodo, DeleteTodo }
 
 def:pub app -> any {
     has isLoggedIn: bool = False,

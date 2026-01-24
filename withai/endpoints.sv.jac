@@ -15,8 +15,8 @@ obj Ingredient {
     has carby: bool;
 }
 
-sem Ingredient. cost= "Estimated cost in JMD";
-sem Ingredient. carby= "Will spike glucose";
+sem Ingredient.cost = "Estimated cost in JMD";
+sem Ingredient.carby = "Will spike glucose";
 
 """
 Generate a shopping list of ingredients needed for a described meal.
