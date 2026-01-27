@@ -5,13 +5,11 @@ A modern todo app with hierarchical sub-todos and priorities.
 """
 
 # Client-side UI
-cl {
-    import from frontend { app as ClientApp }
+cl import from frontend { app as ClientApp }
 
-    def:pub app -> any {
-        return
-            <ClientApp />;
-    }
+cl def:pub app -> any {
+    return
+        <ClientApp />;
 }
 
 import from byllm.lib { Model }
@@ -59,7 +57,7 @@ walker:priv AddTodo {
             priority=self.priority,
             parent_id=self.parent_id
         );
-        report new_todo[0] ;
+        report new_todo[0];
     }
 }
 
@@ -83,7 +81,7 @@ walker:priv ListTodos {
     }
 
     can report_all with `root exit {
-        report self.todos ;
+        report self.todos;
     }
 }
 
@@ -97,7 +95,7 @@ walker:priv ToggleTodo {
     can toggle with Todo entry {
         if here.id == self.todo_id {
             here.completed = not here.completed;
-            report {"id": here.id, "completed": here.completed} ;
+            report {"id": here.id, "completed": here.completed};
         }
     }
 }
@@ -111,8 +109,8 @@ walker:priv DeleteTodo {
 
     can delete with Todo entry {
         if here.id == self.todo_id or here.parent_id == self.todo_id {
-            del here ;
-            report {"deleted": self.todo_id} ;
+            del here;
+            report {"deleted": self.todo_id};
         }
     }
 }
@@ -141,6 +139,6 @@ walker:priv MealToIngredients {
             "meal": self.meal_description,
             "ingredients_added": todos_list,
             "total_cost": total_cost
-        } ;
+        };
     }
 }

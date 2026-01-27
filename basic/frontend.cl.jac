@@ -1,7 +1,7 @@
 """Todo App - Client-Side UI with priorities and sub-todos."""
 
 import from react { useEffect }
-import from "@jac-client/utils" { jacSignup, jacLogin, jacLogout, jacIsLoggedIn }
+import from "@jac/runtime" { jacSignup, jacLogin, jacLogout, jacIsLoggedIn }
 
 import ".styles.css";
 
