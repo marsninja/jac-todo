@@ -113,6 +113,8 @@ impl app.handleLogout -> None {
     jacLogout();
     isLoggedIn = False;
     todos = [];
+    ingredients = [];
+    mealInput = "";
 }
 
 impl app.handleSubmit(e: any) -> None {
@@ -136,6 +138,11 @@ impl app.getRootTodos -> list {
     );
 }
 
+impl app.fetchMealPlan -> None {
+    result = root spawn ListMealPlan();
+    ingredients = result.reports[0] if result.reports else [];
+}
+
 impl app.generateIngredients -> None {
     if not mealInput.trim() {
         return;
@@ -147,6 +154,7 @@ impl app.generateIngredients -> None {
 }
 
 impl app.clearIngredients -> None {
+    root spawn ClearMealPlan();
     ingredients = [];
     mealInput = "";
 }

@@ -8,7 +8,7 @@ import from .components.TodoItem { TodoItem }
 import from .components.AuthForm { AuthForm }
 import from .components.IngredientItem { IngredientItem }
 
-sv import from main { AddTodo, ListTodos, ToggleTodo, DeleteTodo, GenerateShoppingList }
+sv import from main { AddTodo, ListTodos, ToggleTodo, DeleteTodo, GenerateShoppingList, ListMealPlan, ClearMealPlan }
 
 def:pub app -> any {
     has isLoggedIn: bool = False,
@@ -34,6 +34,7 @@ def:pub app -> any {
     can with [isLoggedIn] entry {
         if isLoggedIn {
             fetchTodos();
+            fetchMealPlan();
         }
     }
 
@@ -48,8 +49,9 @@ def:pub app -> any {
     async def handleSubmit(e: any) -> None;
     def handleTodoKeyPress(e: any) -> None;
     def getRootTodos -> list;
+    async def fetchMealPlan -> None;
     async def generateIngredients -> None;
-    def clearIngredients -> None;
+    async def clearIngredients -> None;
     def handleMealKeyPress(e: any) -> None;
     def getIngredientsTotal -> float;
 

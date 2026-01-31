@@ -37,6 +37,14 @@ Generate a shopping list of ingredients needed for a described meal.
 """
 def generate_ingredients(meal_description: str) -> list[Ingredient] by llm();
 
+node MealIngredient {
+    has name: str,
+        quantity: float,
+        unit: str,
+        cost: float,
+        carby: bool;
+}
+
 node Todo {
     has id: str,
         title: str,
@@ -127,17 +135,66 @@ walker:priv GenerateShoppingList {
     has meal_description: str;
 
     can generate with `root entry {
+        # Clear existing meal ingredients from this user's graph
+        visit [-->];
+        # Generate new ingredients via LLM
         ingredients = generate_ingredients(self.meal_description);
         result: list = [];
         for ing in ingredients {
-            result.append({
+            ing_data = {
                 "name": ing.name,
                 "quantity": ing.quantity,
                 "unit": str(ing.unit).split(".")[-1].lower(),
                 "cost": ing.cost,
                 "carby": ing.carby
-            });
+            };
+            # Persist to user's graph
+            here ++> MealIngredient(
+                name=ing_data["name"],
+                quantity=ing_data["quantity"],
+                unit=ing_data["unit"],
+                cost=ing_data["cost"],
+                carby=ing_data["carby"]
+            );
+            result.append(ing_data);
         }
         report result;
+    }
+
+    can clear_old with MealIngredient entry {
+        del here;
+    }
+}
+
+walker:priv ListMealPlan {
+    has ingredients: list = [];
+
+    can collect with `root entry {
+        visit [-->];
+    }
+
+    can gather with MealIngredient entry {
+        self.ingredients.append({
+            "name": here.name,
+            "quantity": here.quantity,
+            "unit": here.unit,
+            "cost": here.cost,
+            "carby": here.carby
+        });
+    }
+
+    can report_all with `root exit {
+        report self.ingredients;
+    }
+}
+
+walker:priv ClearMealPlan {
+    can collect with `root entry {
+        visit [-->];
+    }
+
+    can clear with MealIngredient entry {
+        del here;
+        report {"cleared": True};
     }
 }
