@@ -5,11 +5,13 @@ A modern todo app with hierarchical sub-todos and priorities.
 """
 
 # Client-side UI
-cl import from frontend { app as ClientApp }
+cl {
+    import from frontend { app as ClientApp }
 
-cl def:pub app -> any {
-    return
-        <ClientApp />;
+    def:pub app -> any {
+        return
+            <ClientApp />;
+    }
 }
 
 import from byllm.lib { Model }
@@ -43,13 +45,17 @@ node Todo {
         parent_id: str = "";
 }
 
+glob todo_counter: int = 0;
+
 walker:priv AddTodo {
     has title: str,
         priority: str = "medium",
         parent_id: str = "";
 
     can create with `root entry {
-        new_id = str(uuid4());
+        global todo_counter;
+        todo_counter += 1;
+        new_id = "todo_" + str(todo_counter);
         new_todo = here ++> Todo(
             id=new_id,
             title=self.title,
@@ -57,7 +63,9 @@ walker:priv AddTodo {
             priority=self.priority,
             parent_id=self.parent_id
         );
-        report new_todo[0];
+        if new_todo {
+            report new_todo[0];
+        }
     }
 }
 
@@ -115,30 +123,21 @@ walker:priv DeleteTodo {
     }
 }
 
-walker:priv MealToIngredients {
+walker:priv GenerateShoppingList {
     has meal_description: str;
 
-    can process with `root entry {
+    can generate with `root entry {
         ingredients = generate_ingredients(self.meal_description);
-        total_cost: float = 0.0;
-        for ingredient in ingredients {
-            new_id = str(uuid4());
-            title = f"{ingredient.quantity} {ingredient.unit.name} {ingredient.name} (${ingredient.cost:.2f})";
-            here ++> Todo(
-                id=new_id,
-                title=title,
-                completed=False,
-                priority="medium",
-                parent_id=""
-            );
-            total_cost += ingredient.cost;
+        result: list = [];
+        for ing in ingredients {
+            result.append({
+                "name": ing.name,
+                "quantity": ing.quantity,
+                "unit": str(ing.unit).split(".")[-1].lower(),
+                "cost": ing.cost,
+                "carby": ing.carby
+            });
         }
-        todos_result = root spawn ListTodos();
-        todos_list = todos_result.reports[0] if todos_result.reports else [];
-        report {
-            "meal": self.meal_description,
-            "ingredients_added": todos_list,
-            "total_cost": total_cost
-        };
+        report result;
     }
 }

@@ -3,7 +3,7 @@
 [project]
 name = "{{name}}"
 version = "0.1.0"
-description = "A full-stack Jac application"
+description = "A full-stack Jac application with AI"
 entry-point = "main.jac"
 
 [dependencies]
@@ -37,8 +37,8 @@ sans = ["Inter", "system-ui", "-apple-system", "sans-serif"]
 
 # Jacpac metadata - used when packing, stripped from created projects
 [jacpack]
-name = "fullstackai"
-description = "Full-stack Jac app with authenticated todo list example"
+name = "multi-user-todo-meals-app"
+description = "Full-stack Jac app with authenticated todo list and AI meal planner example"
 jaclang = "0.9.8"
 
 [[jacpack.plugins]]
