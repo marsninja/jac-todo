@@ -33,138 +33,17 @@ def:pub app -> any {
         }
     }
 
-    async def fetchTodos -> None {
-        todosLoading = True;
-        result = root spawn ListTodos();
-        todos = result.reports[0] if result.reports else [];
-        todosLoading = False;
-    }
-
-    async def addTodo -> None {
-        if not newTodoText.trim() {
-            return;
-        }
-        response = root spawn AddTodo(title=newTodoText, priority=newPriority);
-        newTodo = response.reports[0];
-        todos = todos.concat(
-            [
-                {
-                    "id": newTodo.id,
-                    "title": newTodo.title,
-                    "completed": newTodo.completed,
-                    "priority": newTodo.priority,
-                    "parent_id": newTodo.parent_id
-                }
-            ]
-        );
-        newTodoText = "";
-        newPriority = "medium";
-    }
-
-    async def addSubTodo(title: str, parentId: str) -> None {
-        response = root spawn AddTodo(title=title, parent_id=parentId);
-        newTodo = response.reports[0];
-        todos = todos.concat(
-            [
-                {
-                    "id": newTodo.id,
-                    "title": newTodo.title,
-                    "completed": newTodo.completed,
-                    "priority": newTodo.priority,
-                    "parent_id": newTodo.parent_id
-                }
-            ]
-        );
-    }
-
-    async def toggleTodo(todoId: str) -> None {
-        root spawn ToggleTodo(todo_id=todoId);
-        todos = todos.map(
-            lambda t: any  -> any { if t.id == todoId {
-                return {
-                    "id": t.id,
-                    "title": t.title,
-                    "completed": not t.completed,
-                    "priority": t.priority,
-                    "parent_id": t.parent_id
-                };
-            }return t; }
-        );
-    }
-
-    async def deleteTodo(todoId: str) -> None {
-        root spawn DeleteTodo(todo_id=todoId);
-        todos = todos.filter(
-            lambda t: any  -> bool { return t.id != todoId and t.parent_id != todoId; }
-        );
-    }
-
-    async def handleLogin -> None {
-        error = "";
-        if not username.trim() or not password {
-            error = "Please fill in all fields";
-            return;
-        }
-        loading = True;
-        success = await jacLogin(username, password);
-        loading = False;
-        if success {
-            isLoggedIn = True;
-            username = "";
-            password = "";
-        } else {
-            error = "Invalid username or password";
-        }
-    }
-
-    async def handleSignup -> None {
-        error = "";
-        if not username.trim() or not password {
-            error = "Please fill in all fields";
-            return;
-        }
-        if password.length < 4 {
-            error = "Password must be at least 4 characters";
-            return;
-        }
-        loading = True;
-        result = await jacSignup(username, password);
-        loading = False;
-        if result["success"] {
-            isLoggedIn = True;
-            username = "";
-            password = "";
-        } else {
-            error = result["error"] if result["error"] else "Signup failed";
-        }
-    }
-
-    def handleLogout -> None {
-        jacLogout();
-        isLoggedIn = False;
-        todos = [];
-    }
-
-    async def handleSubmit(e: any) -> None {
-        e.preventDefault();
-        if isSignup {
-            await handleSignup();
-        } else {
-            await handleLogin();
-        }
-    }
-
-    def handleTodoKeyPress(e: any) -> None {
-        if e.key == "Enter" {
-            addTodo();
-        }
-    }
-
-    def getRootTodos -> list {
-        return todos.filter(
-            lambda t: any  -> bool { return not t.parent_id or t.parent_id == ""; }
-        );
-    }
+    async def fetchTodos -> None;
+    async def addTodo -> None;
+    async def addSubTodo(title: str, parentId: str) -> None;
+    async def toggleTodo(todoId: str) -> None;
+    async def deleteTodo(todoId: str) -> None;
+    async def handleLogin -> None;
+    async def handleSignup -> None;
+    def handleLogout -> None;
+    async def handleSubmit(e: any) -> None;
+    def handleTodoKeyPress(e: any) -> None;
+    def getRootTodos -> list;
 
     if checkingAuth {
         return
