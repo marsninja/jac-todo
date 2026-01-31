@@ -33,7 +33,13 @@ walker:priv AddTodo {
         global todo_counter;
         todo_counter += 1;
         new_id = "todo_" + str(todo_counter);
-        new_todo = here ++> Todo(id=new_id, title=self.title, completed=False, priority=self.priority, parent_id=self.parent_id);
+        new_todo = here ++> Todo(
+            id=new_id,
+            title=self.title,
+            completed=False,
+            priority=self.priority,
+            parent_id=self.parent_id
+        );
         if new_todo {
             report new_todo[0];
         }
@@ -48,7 +54,15 @@ walker:priv ListTodos {
     }
 
     can gather with Todo entry {
-        self.todos.append({"id": here.id, "title": here.title, "completed": here.completed, "priority": here.priority, "parent_id": here.parent_id});
+        self.todos.append(
+            {
+                "id": here.id,
+                "title": here.title,
+                "completed": here.completed,
+                "priority": here.priority,
+                "parent_id": here.parent_id
+            }
+        );
     }
 
     can report_all with `root exit {
@@ -85,4 +99,3 @@ walker:priv DeleteTodo {
         }
     }
 }
-
