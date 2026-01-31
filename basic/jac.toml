@@ -37,7 +37,7 @@ sans = ["Inter", "system-ui", "-apple-system", "sans-serif"]
 
 # Jacpac metadata - used when packing, stripped from created projects
 [jacpack]
-name = "fullstack"
+name = "multi-user-todo-app"
 description = "Full-stack Jac app with authenticated todo list example"
 jaclang = "0.9.8"
 
@@ -47,10 +47,7 @@ version = "0.2.8"
 
 [jacpack.options]
 directories = [".jac", "assets"]
-gitignore_entries = [
-    "# Ignore all build artifacts in .jac directory",
-    "*"
-]
+gitignore_entries = ["# Ignore all build artifacts in .jac directory", "*"]
 root_gitignore_entries = [
     "# Jac build artifacts",
     ".jac/",
@@ -60,7 +57,7 @@ root_gitignore_entries = [
     "",
     "# IDE",
     ".vscode/",
-    ".idea/"
+    ".idea/",
 ]
 files = [
     "main.jac",
@@ -68,5 +65,5 @@ files = [
     "frontend.cl.jac",
     "components/*.jac",
     "README.md",
-    "styles.css"
+    "styles.css",
 ]
