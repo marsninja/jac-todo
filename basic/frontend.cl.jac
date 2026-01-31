@@ -1,6 +1,5 @@
 """Todo App - Client-Side UI with priorities and sub-todos."""
 
-import from react { useEffect }
 import from "@jac/runtime" { jacSignup, jacLogin, jacLogout, jacIsLoggedIn }
 
 import ".styles.css";
@@ -23,12 +22,14 @@ def:pub app -> any {
         newPriority: str = "medium",
         todosLoading: bool = True;
 
-    useEffect(lambda -> None { isLoggedIn = jacIsLoggedIn(); checkingAuth = False; }, []);
+    can with entry {
+        isLoggedIn = jacIsLoggedIn();
+        checkingAuth = False;
+    }
 
-    useEffect(
-        lambda -> None { if isLoggedIn { fetchTodos(); }},
-        [isLoggedIn]
-    );
+    can with [isLoggedIn] entry {
+        if isLoggedIn { fetchTodos(); }
+    }
 
     async def fetchTodos -> None {
         todosLoading = True;
@@ -147,9 +148,7 @@ def:pub app -> any {
                                     <div style={{"textAlign": "center", "padding": "3rem", "color": "rgba(255,255,255,0.6)"}}>No tasks yet. Add one above!</div>
                                 ) if rootTodos.length == 0 else (
                                     <div>
-                                        {rootTodos.map(lambda todo: any -> any {
-                                            return <TodoItem key={todo.id} todo={todo} allTodos={todos} onToggle={toggleTodo} onDelete={deleteTodo} onAddSubTodo={addSubTodo} />;
-                                        })}
+                                        {[<TodoItem key={todo.id} todo={todo} allTodos={todos} onToggle={toggleTodo} onDelete={deleteTodo} onAddSubTodo={addSubTodo} /> for todo in rootTodos]}
                                     </div>
                                 )}
                             </div>
