@@ -60,7 +60,7 @@ walker:priv AddTodo {
         priority: str = "medium",
         parent_id: str = "";
 
-    can create with `root entry {
+    can create with Root entry {
         global todo_counter;
         todo_counter += 1;
         new_id = "todo_" + str(todo_counter);
@@ -80,7 +80,7 @@ walker:priv AddTodo {
 walker:priv ListTodos {
     has todos: list = [];
 
-    can collect with `root entry {
+    can collect with Root entry {
         visit [-->];
     }
 
@@ -96,7 +96,7 @@ walker:priv ListTodos {
         );
     }
 
-    can report_all with `root exit {
+    can report_all with Root exit {
         report self.todos;
     }
 }
@@ -104,7 +104,7 @@ walker:priv ListTodos {
 walker:priv ToggleTodo {
     has todo_id: str;
 
-    can search with `root entry {
+    can search with Root entry {
         visit [-->];
     }
 
@@ -119,7 +119,7 @@ walker:priv ToggleTodo {
 walker:priv DeleteTodo {
     has todo_id: str;
 
-    can search with `root entry {
+    can search with Root entry {
         visit [-->];
     }
 
@@ -134,7 +134,7 @@ walker:priv DeleteTodo {
 walker:priv GenerateShoppingList {
     has meal_description: str;
 
-    can generate with `root entry {
+    can generate with Root entry {
         # Clear existing meal ingredients from this user's graph
         visit [-->];
         # Generate new ingredients via LLM
@@ -169,7 +169,7 @@ walker:priv GenerateShoppingList {
 walker:priv ListMealPlan {
     has ingredients: list = [];
 
-    can collect with `root entry {
+    can collect with Root entry {
         visit [-->];
     }
 
@@ -183,13 +183,13 @@ walker:priv ListMealPlan {
         });
     }
 
-    can report_all with `root exit {
+    can report_all with Root exit {
         report self.ingredients;
     }
 }
 
 walker:priv ClearMealPlan {
-    can collect with `root entry {
+    can collect with Root entry {
         visit [-->];
     }
 
